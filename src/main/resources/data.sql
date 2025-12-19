@@ -1,51 +1,53 @@
--- ========================================
--- COUNTRIES
--- ========================================
-INSERT INTO country (id, name, code) VALUES (1, 'Ukraine', 'UKR');
-INSERT INTO country (id, name, code) VALUES (2, 'Russia', 'RUS');
-INSERT INTO country (id, name, code) VALUES (3, 'USA', 'USA');
-INSERT INTO country (id, name, code) VALUES (4, 'China', 'CHN');
-INSERT INTO country (id, name, code) VALUES (5, 'Germany', 'DEU');
+-- =========================
+-- PAÍSES
+-- =========================
+INSERT INTO countries (name, code) VALUES
+('Ucrania', 'UKR'),
+('Rusia', 'RUS'),
+('Estados Unidos', 'USA'),
+('Francia', 'FRA');
 
--- ========================================
--- CONFLICTS
--- ========================================
-INSERT INTO conflict (id, name, start_date, status, description)
-VALUES (1, 'Ukraine-Russia War', '2022-02-24', 'ACTIVE', 'Armed conflict in Eastern Europe.');
-INSERT INTO conflict (id, name, start_date, status, description)
-VALUES (2, 'Cold War', '1947-03-05', 'ENDED', 'Geopolitical tension between the USA and USSR.');
+-- =========================
+-- CONFLICTOS
+-- =========================
+INSERT INTO conflicts (name, start_date, status, description) VALUES
+('Conflicto en Ucrania', '2022-02-24', 'ACTIVE', 'Conflicto armado en Ucrania iniciado en 2022'),
+('Guerra Civil Ejemplo', '2019-01-01', 'ENDED', 'Ejemplo de conflicto finalizado');
 
--- ========================================
--- CONFLICT_COUNTRY (Many-to-Many)
--- ========================================
-INSERT INTO conflict_country (conflict_id, country_id) VALUES (1, 1); -- Ukraine
-INSERT INTO conflict_country (conflict_id, country_id) VALUES (1, 2); -- Russia
-INSERT INTO conflict_country (conflict_id, country_id) VALUES (2, 2); -- Russia
-INSERT INTO conflict_country (conflict_id, country_id) VALUES (2, 3); -- USA
+-- =========================
+-- RELACIÓN CONFLICTO - PAÍS
+-- (ManyToMany)
+-- =========================
+-- Conflicto 1: Ucrania y Rusia
+INSERT INTO conflict_countries (conflict_id, country_id) VALUES
+(1, 1),
+(1, 2);
 
--- ========================================
--- FACTIONS
--- ========================================
-INSERT INTO faction (id, name, conflict_id) VALUES (1, 'Ukrainian Forces', 1);
-INSERT INTO faction (id, name, conflict_id) VALUES (2, 'Russian Forces', 1);
-INSERT INTO faction (id, name, conflict_id) VALUES (3, 'Western Bloc', 2);
-INSERT INTO faction (id, name, conflict_id) VALUES (4, 'Eastern Bloc', 2);
+-- Conflicto 2: EEUU y Francia
+INSERT INTO conflict_countries (conflict_id, country_id) VALUES
+(2, 3),
+(2, 4);
 
--- ========================================
--- FACTION_COUNTRY (Many-to-Many)
--- ========================================
-INSERT INTO faction_country (faction_id, country_id) VALUES (1, 1); -- Ukraine
-INSERT INTO faction_country (faction_id, country_id) VALUES (2, 2); -- Russia
-INSERT INTO faction_country (faction_id, country_id) VALUES (3, 3); -- USA
-INSERT INTO faction_country (faction_id, country_id) VALUES (4, 2); -- Russia
-INSERT INTO faction_country (faction_id, country_id) VALUES (4, 4); -- China
+-- =========================
+-- FACCIONES
+-- =========================
+INSERT INTO factions (name, conflict_id) VALUES
+('Facción A', 1),
+('Facción B', 1),
+('Facción C', 2);
 
--- ========================================
--- EVENTS
--- ========================================
-INSERT INTO event (id, event_date, location, description, conflict_id)
-VALUES (1, '2022-02-24', 'Kyiv', 'Russian invasion of Ukraine begins.', 1);
-INSERT INTO event (id, event_date, location, description, conflict_id)
-VALUES (2, '1949-04-04', 'Washington D.C.', 'NATO formed.', 2);
-INSERT INTO event (id, event_date, location, description, conflict_id)
-VALUES (3, '1955-05-14', 'Moscow', 'Warsaw Pact formed.', 2);
+-- =========================
+-- RELACIÓN FACCION - PAÍS
+-- =========================
+INSERT INTO faction_supporting_countries (faction_id, country_id) VALUES
+(1, 3), -- EEUU apoya Facción A
+(2, 2), -- Rusia apoya Facción B
+(3, 4); -- Francia apoya Facción C
+
+-- =========================
+-- EVENTOS
+-- =========================
+INSERT INTO events (event_date, location, description, conflict_id) VALUES
+('2022-03-01', 'Kiev', 'Primer ataque importante', 1),
+('2022-03-15', 'Mariupol', 'Asedio de la ciudad', 1),
+('2019-02-01', 'Ciudad Ejemplo', 'Inicio de operaciones', 2);

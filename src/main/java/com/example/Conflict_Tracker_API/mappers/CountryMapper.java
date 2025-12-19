@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CountryMapper {
-    public CountryDto toDto(Country c) {
-        if (c == null) return null;
+    public CountryDto toDto(Country country) {
+        if (country == null) return null;
         CountryDto dto = new CountryDto();
-        dto.setId(c.getId());
-        dto.setName(c.getName());
-        dto.setCode(c.getCode());
+        dto.setId(country.getId());
+        dto.setName(country.getName());
+        dto.setCode(country.getCode());
         return dto;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.Conflict_Tracker_API.controller;
+package com.example.Conflict_Tracker_API.Controller;
 
 import com.example.Conflict_Tracker_API.dto.Conflict.ConflictCreateDto;
 import com.example.Conflict_Tracker_API.dto.Conflict.ConflictResponseDto;
