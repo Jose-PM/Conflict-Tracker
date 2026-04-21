@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Conflict Tracker API - Test Frontend</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f2f2f2; }
+        td.countries { white-space: pre-line; }
+    </style>
+</head>
+<body>
+<h1>Conflict Tracker - Conflictos</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Fecha Inicio</th>
+        <th>Estado</th>
+        <th>Descripción</th>
+        <th>Países</th>
+    </tr>
+    </thead>
+    <tbody id="conflictsTableBody">
+    <!-- Filas generadas por JS -->
+    </tbody>
+</table>
+
+<script>
+    async function loadConflicts() {
+        try {
+            const response = await fetch('/api/v1/conflicts');
+            if (!response.ok) throw new Error('Error al cargar conflictos');
+
+            const conflicts = await response.json();
+            const tbody = document.getElementById('conflictsTableBody');
+            tbody.innerHTML = ''; // Limpiar tabla
+
+            conflicts.forEach(conflict => {
+                const row = document.createElement('tr');
+
+                // ID
+                const tdId = document.createElement('td');
+                tdId.textContent = conflict.id;
+                row.appendChild(tdId);
+
+                // Nombre
+                const tdName = document.createElement('td');
+                tdName.textContent = conflict.name;
+                row.appendChild(tdName);
+
+                // Fecha Inicio
+                const tdStartDate = document.createElement('td');
+                tdStartDate.textContent = conflict.startDate;
+                row.appendChild(tdStartDate);
+
+                // Estado
+                const tdStatus = document.createElement('td');
+                tdStatus.textContent = conflict.status;
+                row.appendChild(tdStatus);
+
+                // Descripción
+                const tdDesc = document.createElement('td');
+                tdDesc.textContent = conflict.description;
+                row.appendChild(tdDesc);
+
+                // Países
+                const tdCountries = document.createElement('td');
+                tdCountries.classList.add('countries');
+                if (conflict.countries && conflict.countries.length > 0) {
+                    tdCountries.textContent = conflict.countries
+                        .map(c => `${c.code} - ${c.name}`)
+                        .join('\n');
+                } else {
+                    tdCountries.textContent = 'Sin países';
+                }
+                row.appendChild(tdCountries);
+
+                tbody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error(error);
+            alert('No se pudieron cargar los conflictos');
+        }
+    }
+
+    // Cargar al iniciar
+    window.onload = loadConflicts;
+</script>
+</body>
+</html>
